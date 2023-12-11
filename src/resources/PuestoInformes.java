@@ -13,10 +13,10 @@ public class PuestoInformes
         exchanger = new Exchanger<Indicacion>();
     }
 
-    public void darInforme() throws InterruptedException
+    public void darInforme(PuestoAtencion puestoAtencion) throws InterruptedException
     {
         semEntrada.release();
-        exchanger.exchange(null);
+        exchanger.exchange(new Indicacion(puestoAtencion, 0, 0, null));
     }
 
     public Indicacion recibirInforme() throws InterruptedException

@@ -9,8 +9,8 @@ public class EventSetHour extends Event{
 
     @Override
     public void execute(GUI gui) {
-        gui.setHour(data);
-        System.out.printf("Hora actual: %d:00.\n", data);
+        gui.setHour(id);
+        System.out.printf("Hora actual: %d:00.\n", id);
     }
     
 }

@@ -1,17 +1,25 @@
 package src.threads;
 
+import java.util.Random;
+
+import src.Config;
 import src.resources.Horario;
+import src.resources.PuestoAtencion;
 import src.resources.PuestoInformes;
 
 public class Informante extends Thread {
     
     private final PuestoInformes puestoInformes;
+    private final PuestoAtencion[] puestoAtencions;
     private final Horario horario;
+    private final Random random;
 
-    public Informante(Horario horario, PuestoInformes puestoInformes)
+    public Informante(Horario horario, PuestoInformes puestoInformes, PuestoAtencion[] puestoAtencions)
     {
+        this.random = new Random();
         this.horario = horario;
         this.puestoInformes = puestoInformes;
+        this.puestoAtencions = puestoAtencions;
     }
 
     @Override
@@ -20,10 +28,10 @@ public class Informante extends Thread {
         try {
             while(true)
             {
-                horario.esperarHorario();
-                puestoInformes.darInforme();
-                sleep(200);
-            }  
+                horario.esHorarioDeAtencion();
+                puestoInformes.darInforme(puestoAtencions[random.nextInt(0, 4)]);
+                sleep(Config.DELAY_INFORMANTE);
+            }
         } catch (InterruptedException e) {}
     }
 }

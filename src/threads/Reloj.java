@@ -1,4 +1,6 @@
 package src.threads;
+
+import src.Config;
 import src.Output;
 import src.events.EventSetHour;
 import src.resources.Horario;
@@ -17,7 +19,7 @@ public class Reloj extends Thread {
     {
         while(true)
         {
-            try { sleep(500); } catch (InterruptedException e) {}
+            try { sleep(Config.DELAY_RELOJ); } catch (InterruptedException e) {}
             int hora = horario.aumentarHora();
             Output.pushEvent(new EventSetHour(hora));
         }

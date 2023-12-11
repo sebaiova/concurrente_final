@@ -1,5 +1,6 @@
 package src.gui;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -15,6 +16,8 @@ public class GUIQueue extends JLayeredPane {
         setLayout(layout);
 
         setVisible(true);
+
+        setPreferredSize(new Dimension(200, 100));
     }
 
     public void push(GUIPasajero pasajero)

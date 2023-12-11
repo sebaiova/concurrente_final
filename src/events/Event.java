@@ -3,11 +3,11 @@ import src.gui.GUI;
 
 public abstract class Event {
 
-    protected final int data;
+    protected final int id;
 
-    public Event(int data)
+    public Event(int id)
     {
-        this.data = data;
+        this.id = id;
     }
 
     public abstract void execute(GUI gui);

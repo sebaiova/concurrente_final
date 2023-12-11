@@ -1,18 +1,22 @@
 package src.resources;
 public class Indicacion {
     
-    private final int puestoAtencion;
-    private final int estacion;
+    private final PuestoAtencion puestoAtencion;
+    private final Shop shop;
     private final int puestoEmbarque;
+    private final int horaEmbarque;
 
-    public Indicacion(int puestoAtencion, int estacion, int puestoEmbarque)
+    public Indicacion(PuestoAtencion puestoAtencion, int puestoEmbarque, int horaEmbarque, Shop shop)
     {
         this.puestoAtencion = puestoAtencion;
-        this.estacion = estacion;
         this.puestoEmbarque = puestoEmbarque;
+        this.horaEmbarque = horaEmbarque;
+        this.shop = shop;
     }
 
-    public int getPuestoAtencion()  { return puestoAtencion;    }
-    public int getEstacion()        { return estacion;          }
-    public int getPuestoEmbarque()  { return puestoEmbarque;    }
+    public PuestoAtencion getPuestoAtencion()   { return puestoAtencion;    }
+    public Shop getShop()                       { return shop;              }
+    public int getEstacion()                    { return puestoEmbarque/7;  }
+    public int getPuestoEmbarque()              { return puestoEmbarque;    }
+    public int getHoraDeEmbarque()              { return horaEmbarque;      }
 }

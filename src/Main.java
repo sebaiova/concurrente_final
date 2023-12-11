@@ -1,10 +1,12 @@
 package src;
 
 import src.gui.GUI;
-import src.resources.Aeropuerto;
 import src.resources.Horario;
+import src.resources.PuestoAtencion;
 import src.resources.PuestoInformes;
+import src.resources.Shop;
 import src.resources.Tren;
+import src.threads.Guardia;
 import src.threads.Informante;
 import src.threads.Maquinista;
 import src.threads.Pasajero;
@@ -17,13 +19,24 @@ public class Main
         GUI gui = new GUI("Concurrente TP Final");
         Output.start(gui);
         
-        Aeropuerto aeropuerto = new Aeropuerto();
+        /* Recursos */
+        
         Horario horario = new Horario();
         PuestoInformes puestoInformes = new PuestoInformes();
+
+        Shop[] shops = new Shop[Config.TERMINALES];
+        for(int i=0; i<Config.TERMINALES; i++)
+            shops[i] = new Shop();
+
+        PuestoAtencion[] puestoAtencions = new PuestoAtencion[Config.PUESTOS_ATENCION];
+        for(int i=0; i<Config.PUESTOS_ATENCION; i++)
+            puestoAtencions[i] = new PuestoAtencion(shops);
+
         Tren tren = new Tren();
 
-        
-        Informante informante = new Informante(horario, puestoInformes);
+        /* Hilos */
+
+        Informante informante = new Informante(horario, puestoInformes, puestoAtencions);
         informante.start();
 
         Maquinista maquinista = new Maquinista(tren);
@@ -32,19 +45,17 @@ public class Main
         Reloj reloj = new Reloj(horario);
         reloj.start();
 
-
-        Pasajero[] pasajero = new Pasajero[33];
-        for(int i=0; i<33; i++)
+        Guardia[] guardias= new Guardia[Config.PUESTOS_ATENCION];
+        for(int i=0; i<Config.PUESTOS_ATENCION; i++)
         {
-            pasajero[i] = new Pasajero(puestoInformes, tren);
-            pasajero[i].start();
+            guardias[i] = new Guardia(puestoAtencions[i], horario);
+            guardias[i].start();
         }
 
-
-    //  for(int i=0; i<100; i++)
-      //  {
-      //      Pasajero pasajero = new Pasajero(aeropuerto);
-      //      pasajero.start();
-      //  }   
+        while(true)
+        {
+            Thread.sleep(350);
+            new Pasajero(puestoInformes, tren, horario).start();
+        }
     }
 }

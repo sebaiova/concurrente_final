@@ -31,6 +31,6 @@ public class GUIClock extends JPanel {
 
     public void setHour(int hour)
     {
-        labelHour.setText(String.format("00:%02d", hour));
+        labelHour.setText(String.format("%02d:00", hour));
     }
 }

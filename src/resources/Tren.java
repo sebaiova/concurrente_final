@@ -4,6 +4,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 
+import src.Config;
+
 public class Tren {
     
     private final int CAPACIDAD;
@@ -17,11 +19,11 @@ public class Tren {
 
     public Tren()
     {
-        CAPACIDAD = 10;
-        CANTIDAD_ESTACIONES = 4;
+        CAPACIDAD = Config.CAPACIDAD_TREN;
+        CANTIDAD_ESTACIONES = Config.TERMINALES;
 
         estacionActual = 0;
-        latchEstacion = new CountDownLatch[4];
+        latchEstacion = new CountDownLatch[Config.TERMINALES+1];
 
         semEntrada = new Semaphore(0, true);
         
@@ -34,33 +36,37 @@ public class Tren {
     public void subir(int pasajero, int estacionDestino) throws InterruptedException, BrokenBarrierException
     {
         semEntrada.acquire();
-        System.out.printf("Pasajero %d se sube al tren. Destino: %d.\n", pasajero, estacionDestino);
         barrier.await();
     }
 
     public void bajar(int pasajero, int estacionDestino) throws InterruptedException, BrokenBarrierException
     {
         latchEstacion[estacionDestino].await();
-        System.out.printf("Pasajero %d se baja en destino %d.\n", pasajero, estacionDestino);
     }
 
-    public void conducirSiguienteEstacion() throws InterruptedException, BrokenBarrierException
+    public int conducirEstacionSiguiente() throws InterruptedException, BrokenBarrierException
     {
-        Thread.sleep(500);
+        Thread.sleep(Config.DELAY_TREN);
         latchEstacion[estacionActual].countDown();
         estacionActual++;
+        return estacionActual;
     }
 
-    public void conducirAlInicio() throws InterruptedException
+    public int conducirEstacionPrevia() throws InterruptedException
     {
-        Thread.sleep(500*CANTIDAD_ESTACIONES);
-        System.out.println("El tren vuelve al inicio.");
-        estacionActual=0;
+        Thread.sleep(Config.DELAY_TREN);
+        estacionActual--;
+        return estacionActual;
     }
 
     public boolean estaEnEstacionFinal()
     {
         return estacionActual==CANTIDAD_ESTACIONES;
+    }
+
+    public boolean estaEnEstacionInicial()
+    {
+        return estacionActual==0;
     }
 
     public void iniciarViaje() throws InterruptedException, BrokenBarrierException
