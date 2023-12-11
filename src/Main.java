@@ -52,9 +52,10 @@ public class Main
             guardias[i].start();
         }
 
+        /*Los pasajeros llegan infinitamente */
         while(true)
         {
-            Thread.sleep(350);
+            Thread.sleep(Config.DELAY_PASAJERO_SPAWN);
             new Pasajero(puestoInformes, tren, horario).start();
         }
     }

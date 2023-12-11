@@ -29,7 +29,7 @@ public class Informante extends Thread {
             while(true)
             {
                 horario.esHorarioDeAtencion();
-                puestoInformes.darInforme(puestoAtencions[random.nextInt(0, 4)]);
+                puestoInformes.darInforme(puestoAtencions[random.nextInt(Config.PUESTOS_ATENCION)]);
                 sleep(Config.DELAY_INFORMANTE);
             }
         } catch (InterruptedException e) {}
